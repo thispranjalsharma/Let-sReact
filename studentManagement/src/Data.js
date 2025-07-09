@@ -32,7 +32,7 @@ export default [
   {
     roll: 1006,
     name: "Jay",
-    branch: "UI",
+    branch: "IT",
     contact: 9788838484,
   },
 ];
