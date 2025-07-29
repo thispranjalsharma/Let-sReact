@@ -1,6 +1,17 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getCurrentUser, isUserExit } from "../auth/Auth";
 
 const SubHeader = () => {
+  const navigate = useNavigate();
+
+  const user = getCurrentUser();
+
+  const handleLogout = () => {
+    sessionStorage.setItem("user", "");
+    sessionStorage.clear();
+    navigate("/");
+  };
   return (
     <>
       <div className="container-fluid fixed-top">
@@ -35,9 +46,9 @@ const SubHeader = () => {
         </div>
         <div className="container px-0">
           <nav className="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="index.html" className="navbar-brand">
+            <Link to={"/"} className="navbar-brand">
               <h1 className="text-primary display-6">Fruitables</h1>
-            </a>
+            </Link>
             <button
               className="navbar-toggler py-2 px-3"
               type="button"
@@ -51,12 +62,12 @@ const SubHeader = () => {
               id="navbarCollapse"
             >
               <div className="navbar-nav mx-auto">
-                <a href="index.html" className="nav-item nav-link active">
+                <Link to={"/"} className="nav-item nav-link active">
                   Home
-                </a>
-                <a href="shop.html" className="nav-item nav-link">
+                </Link>
+                <Link to={"/shop"} className="nav-item nav-link">
                   Shop
-                </a>
+                </Link>
                 <a href="shop-detail.html" className="nav-item nav-link">
                   Shop Detail
                 </a>
@@ -86,6 +97,24 @@ const SubHeader = () => {
                 <a href="contact.html" className="nav-item nav-link">
                   Contact
                 </a>
+                {!isUserExit() && (
+                  <Link to={"/signIn"} className="nav-item nav-link">
+                    {" "}
+                    Sign In{" "}
+                  </Link>
+                )}
+
+                {!isUserExit() && (
+                  <Link to={"/signUp"} className="nav-item nav-link">
+                    Sign Up
+                  </Link>
+                )}
+
+                {isUserExit() && (
+                  <label onClick={handleLogout} className="nav-item nav-link">
+                    Sign Out
+                  </label>
+                )}
               </div>
               <div className="d-flex m-3 me-0">
                 <button
@@ -109,9 +138,9 @@ const SubHeader = () => {
                     3
                   </span>
                 </a>
-                <a href="#" className="my-auto">
+                <Link to={"/profile"} className="my-auto">
                   <i className="fas fa-user fa-2x"></i>
-                </a>
+                </Link>
               </div>
             </div>
           </nav>

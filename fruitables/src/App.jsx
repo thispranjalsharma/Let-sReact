@@ -1,6 +1,4 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { createContext, useState } from "react";
 import "./App.css";
 import SubHeader from "./Components/SubHeader/SubHeader";
 import Slider from "./Components/Silder/Slider";
@@ -15,51 +13,50 @@ import { useEffect } from "react";
 import { useReducer } from "react";
 import axios from "axios";
 import EndPoints from "./apis/EndPoints";
+import { Route, Routes } from "react-router-dom";
+import Shop from "./Components/Pages/Shop";
+import Home from "./Components/Pages/Home";
+import ShopDetails from "./Components/Pages/ShopDetails";
+import SignUp from "./Components/Pages/SignUp";
+import SignIn from "./Components/Pages/SignIn";
+import BuyNow from "./Components/Pages/BuyNow";
+import Auth from "./Components/auth/Auth";
+import Profile from "./Components/Pages/Profile";
+
+export const ProductContext = createContext();
 
 function App() {
-  const [state, dispatch] = useReducer(
-    (state, action) => {
-      if (action.type === "productList") {
-        state.productList = action.payload;
-      }
-      return { ...state };
-    },
-    {
-      productList: [],
-    }
-  );
-
-  useEffect(() => {
-    loadProduct();
-  }, []);
-
-  const loadProduct = async () => {
-    const responsive = await axios.get(EndPoints.PRODUCT_LIST);
-    console.log(responsive);
-    dispatch({ type: "productList", payload: responsive.data.productList });
-  };
-
   return (
     <>
       {/* <div id="spinner" className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
             <div className="spinner-grow text-primary" role="status"></div>
         </div> */}
 
-      <SubHeader />
-
-      <Slider />
-
-      <Feature />
-
-      <OrganicProduct />
-
-      <FruiteCard />
-
-      <BestsellerProduct />
-
-      <Testimonial />
-
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/signIn" element={<SignIn />} />
+        <Route path="/shopDetails/:id" element={<ShopDetails />} />
+        <Route
+          path="/profile"
+          element={
+            <Auth>
+              {" "}
+              <Profile />{" "}
+            </Auth>
+          }
+        />
+        <Route
+          path="/buyNow"
+          element={
+            <Auth>
+              {" "}
+              <BuyNow />{" "}
+            </Auth>
+          }
+        />
+      </Routes>
     </>
   );
 }
